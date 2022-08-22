@@ -18,7 +18,12 @@ namespace WebApiAutores.Controllers
         public async Task<ActionResult<Libro>> Get(int id)
         {
             //Listando libros de autores que existen , usamos el include de incluir
-            return await context.Libros.Include(x=>x.Autor).FirstOrDefaultAsync(x => x.Id == id);
+            var existe = await context.Libros.Include(x => x.Autor).FirstOrDefaultAsync(x => x.Id == id);
+            if(existe == null)
+            {
+                return NotFound();
+            }
+            return existe;
         }
         //CREAR
         [HttpPost]
